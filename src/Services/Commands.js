@@ -1,11 +1,15 @@
-const { ping } = require("./Commands/Ping.js");
+const Ping = require("./Commands/Ping.js");
+const Scaleway = require("./Commands/Scaleway/Scaleway.js");
 
 module.exports = {
     "commands" : [
         {
-            "name": "ping",
-            "description": "Replies with Pong",
-            "action": ping
+            ...Ping.slashBuilder.toJSON(),
+            "action" : Ping.action
+        },
+        {
+            ...Scaleway.slashBuilder.toJSON(),
+            "action" : Scaleway.action
         }
     ]
 }
