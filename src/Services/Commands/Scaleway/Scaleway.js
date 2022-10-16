@@ -1,4 +1,26 @@
 const { SlashCommandBuilder } = require("discord.js");
+const { ScalewayManager } = require("./ScalewayManager");
+
+async function scaleway(interaction) {
+
+    let scaManager = new ScalewayManager(interaction);
+    switch(interaction.options._subcommand) {
+        case "list":
+            scaManager.list();
+            break;
+        case "status":
+            scaManager.status();
+            break;
+        case "start":
+            scaManager.start();
+            break;
+        case "stop":
+            scaManager.stop();
+            break;
+        default:
+            interaction.reply("Mmh didn't get this one. Please retry");
+    }
+}
 
 module.exports = {
     "slashBuilder" :
@@ -14,7 +36,7 @@ module.exports = {
             sc
                 .setName("status")
                 .setDescription("Check the status off a server")
-                .addUserOption( o =>
+                .addStringOption( o =>
                     o
                         .setName("server_id")
                         .setDescription("The server id")
@@ -25,7 +47,7 @@ module.exports = {
             sc
                 .setName("start")
                 .setDescription("Start a server")
-                .addUserOption( o =>
+                .addStringOption( o =>
                     o
                         .setName("server_id")
                         .setDescription("The server id")
@@ -36,7 +58,7 @@ module.exports = {
             sc
                 .setName("stop")
                 .setDescription("Stop a server")
-                .addUserOption( o =>
+                .addStringOption( o =>
                     o
                         .setName("server_id")
                         .setDescription("The server id")
@@ -44,5 +66,5 @@ module.exports = {
                 )
         )
     ,
-    "action": (s) => { s.reply("yes"); }
+    "action": scaleway
 }

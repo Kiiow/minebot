@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 
 const { commands } = require("./src/Services/Commands");
-const { refreshSlashCommands } = require("./src/Services/SlashCommands");
+const { refreshSlashCommands, removeAllSlashCommands } = require("./src/Services/SlashCommands");
 const { CommandManager } = require("./src/Services/CommandManager");
 const { loadConfig } = require("./src/Services/Config");
 
@@ -30,6 +30,7 @@ process.on('SIGINT', () => {
 
 
 process.on('exit', () => {
+  removeAllSlashCommands();
   console.log(`${client.user?.tag} disconnecting...`);
   client.destroy();
 })
