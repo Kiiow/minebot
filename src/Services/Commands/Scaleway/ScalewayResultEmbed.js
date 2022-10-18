@@ -31,7 +31,7 @@ class ScalewayResultEmbed {
         this.embed.addFields(
             { name: "Status", value: `${this.getColorByState(server.state)} ${server.state}`, inline: true},
             { name: server.name, value: server.id, inline: true},
-            { name: "type", value: server.commercial_type, inline: true}
+            { name: "IP", value: server.public_ip.address, inline: true}
         )
     }
     
