@@ -1,14 +1,13 @@
+require("./src/Services/Config")();
+
 const { Client, GatewayIntentBits } = require("discord.js");
 
 const { commands } = require("./src/Services/Commands");
 const { refreshSlashCommands, removeAllSlashCommands } = require("./src/Services/SlashCommands");
 const { CommandManager } = require("./src/Services/CommandManager");
-const { loadConfig } = require("./src/Services/Config");
 
-loadConfig();
 const client = new Client({ "intents" : [ GatewayIntentBits.Guilds ] });
 refreshSlashCommands(commands);
-
 
 client.on('ready', () => {
     console.log(`Client logged in as ${client.user?.tag}`);

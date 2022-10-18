@@ -20,9 +20,12 @@ class UrlBuilder {
     }
 
     build() {
-        let url = `${this.url}${this.path}?`;
-        for(let [key, value] of this.params) {
-            url += `${key}=${value}&`;
+        let url = `${this.url}${this.path}`;
+        if(this.params.size > 0) {
+            url += '?';
+            for(let [key, value] of this.params) {
+                url += `${key}=${value}&`;
+            }
         }
 
         return url;
