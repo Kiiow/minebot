@@ -32,7 +32,7 @@ class ScalewayResultEmbed {
             { name: "Status", value: `${this.getColorByState(server.state)} ${server.state}`, inline: true},
             { name: server.name, value: server.id, inline: true},
             { name: "IP", value: server.public_ip?.address ?? "None", inline: true}
-        )
+        );
     }
     
     getColorByState(state) {

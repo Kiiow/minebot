@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require("discord.js");
 const { ScalewayHandler } = require("./ScalewayHandler");
 
 async function scaleway(interaction) {
-
     let scaManager = new ScalewayHandler(interaction);
     switch(interaction.options._subcommand) {
         case "list":

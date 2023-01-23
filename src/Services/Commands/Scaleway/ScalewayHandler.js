@@ -4,6 +4,8 @@ const { ScalewayResultEmbed } = require("./ScalewayResultEmbed");
 class ScalewayHandler {
 
     interaction;
+    
+    serverId;
 
     constructor(interaction) {
         this.interaction = interaction;
