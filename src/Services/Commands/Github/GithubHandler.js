@@ -43,7 +43,7 @@ class GithhubHandler {
     async profile() {
         try {
             let data = await getProfile(this.user);
-            let embedResponse = (new GithubProfileToEmbed(data?.name, data)).getEmbed();
+            let embedResponse = (new GithubProfileToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
         } catch (err) {
             console.log(err);

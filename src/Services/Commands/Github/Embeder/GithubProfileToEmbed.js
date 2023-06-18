@@ -6,7 +6,7 @@ class GithubProfileToEmbed {
     embed = undefined;
     data = {};
 
-    constructor(title, data) {
+    constructor(data) {
         this.data = data;
         this.initEmbedBuilder();
     }
