@@ -7,7 +7,7 @@ class GithubReleasesToEmbed {
 
     constructor(title, data) {
         this.data = data;
-        this.initEmbedBuilder({ name: title, color: 0x0099FF });
+        this.initEmbedBuilder({ name: title, color: 0x2B2D31 });
         this.embedReleases();
     }
 
@@ -34,8 +34,8 @@ class GithubReleasesToEmbed {
         })
 
         this.embed.addFields(
-            { name: "Name", value: `${!release.draft && !release.prerelease ? ":rocket:" : ":probing_cane:"} ${release.name}`, inline: true },
-            { name: "Release date", value: (new Date(release.published_at)).toLocaleString(), inline: true },
+            { name: "Name", value: `[${release.name}](${release.url})`, inline: true },
+            { name: "Release date", value: (new Date(release.published_0at)).toLocaleString(), inline: true },
             { name: "Downloads", value: `${downloadCount}`, inline: true }
         );
     }

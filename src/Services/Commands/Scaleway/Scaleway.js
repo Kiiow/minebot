@@ -24,7 +24,7 @@ async function scaleway(interaction) {
 module.exports = {
     "slashBuilder" :
     new SlashCommandBuilder()
-        .setName("scaleway")
+        .setName("sca")
         .setDescription("Interact with scaleway servers")
         .addSubcommand(sc => 
             sc
