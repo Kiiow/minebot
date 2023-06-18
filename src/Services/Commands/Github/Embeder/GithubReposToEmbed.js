@@ -7,7 +7,7 @@ class GithubReposToEmbed {
 
     constructor(title, data) {
         this.data = data;
-        this.initEmbedBuilder({ name: title, color: 0x0099FF });
+        this.initEmbedBuilder({ name: title, color: 0x2B2D31 });
         this.embedRepos();
     }
 
@@ -18,7 +18,7 @@ class GithubReposToEmbed {
         }
         this.embed = new EmbedBuilder()
             .setColor(color)
-            .setAuthor({ name: name, iconURL: avatar_url });
+            .setThumbnail(avatar_url);
     }
 
     embedRepos() {

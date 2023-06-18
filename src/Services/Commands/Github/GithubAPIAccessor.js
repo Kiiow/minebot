@@ -7,19 +7,8 @@ const GITHUB_API_HEADER = {
     "Content-type": "application/json"
 };
 
-function getReposFromUser(user) {
+function getRepositories(user) {
     let url = (new UrlBuilder(BASE_URL)).setPath(`users/${user}/repos`);
-    return request(
-        url.build(),
-        {
-            method: "GET",
-            headers: GITHUB_API_HEADER
-        }
-    );
-}
-
-function getReposFromOrganization(organization) {
-    let url = (new UrlBuilder(BASE_URL)).setPath(`orgs/${organization}/repos`);
     return request(
         url.build(),
         {
@@ -40,8 +29,19 @@ function getReleasesFromOrganization(organization, repository) {
     );
 }
 
+function getProfile(user) {
+    let url = (new UrlBuilder(BASE_URL)).setPath(`users/${user}`);
+    return request(
+        url.build(),
+        {
+            method: "GET",
+            headers: GITHUB_API_HEADER
+        }
+    );
+}
+
 module.exports = {
-    getReposFromOrganization,
-    getReposFromUser,
-    getReleasesFromOrganization
+    getRepositories,
+    getReleasesFromOrganization,
+    getProfile
 };
