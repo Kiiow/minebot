@@ -8,10 +8,10 @@ class GithubProfileToEmbed {
 
     constructor(title, data) {
         this.data = data;
-        this.initEmbedBuilder({ name: title, color: 0x2B2D31 });
+        this.initEmbedBuilder();
     }
 
-    initEmbedBuilder({ name: name, color: color }) {
+    initEmbedBuilder() {
         let numberOfRepository = this.data?.public_repos;
         let footerItems = [];
         if(this.data?.twitter_username) {
@@ -22,9 +22,12 @@ class GithubProfileToEmbed {
             `Following: ${this.data?.following}`
         );
         this.embed = new EmbedBuilder()
-            .setColor(color)
-            .setTitle(name)
-            .setURL(this.data?.url)
+            .setAuthor({
+                name: this.data?.login,
+                iconURL: "https://cdn-icons-png.flaticon.com/512/25/25231.png",
+                url: this.data?.html_url
+            })
+            .setColor(0x2B2D31)
             .setThumbnail(this.data?.avatar_url)
             .setDescription(this.data?.bio)
             .addFields(
@@ -32,8 +35,7 @@ class GithubProfileToEmbed {
                 { name: "Created", value: formatDate(new Date(this.data?.created_at), "dd/mm/yyyy"), inline: true }
             )
             .setFooter({
-                text: footerItems.join(" | "),
-                iconURL: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+                text: footerItems.join(" | ")
             })
         ;
     }
