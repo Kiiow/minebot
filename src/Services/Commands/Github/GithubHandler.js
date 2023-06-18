@@ -19,7 +19,7 @@ class GithhubHandler {
     async releases() {
         try {
             let data = await getReleasesFromOrganization(this.user, this.repository);
-            const embedResponse = (new GithubReleasesToEmbed("Releases", data)).getEmbed();
+            const embedResponse = (new GithubReleasesToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [ embedResponse ] });
         } catch (err) {
             console.log(err);
@@ -31,7 +31,7 @@ class GithhubHandler {
         try {
             let embedResponse = undefined;
             let data = await getRepositories(this.user);
-            embedResponse = (new GithubReposToEmbed("Users repositories", data)).getEmbed();
+            embedResponse = (new GithubReposToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
             return;
         } catch (err) {

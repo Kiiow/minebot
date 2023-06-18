@@ -5,20 +5,20 @@ class GithubReleasesToEmbed {
     embed = undefined;
     data = {};
 
-    constructor(title, data) {
+    constructor(data) {
         this.data = data;
-        this.initEmbedBuilder({ name: title, color: 0x2B2D31 });
+        this.initEmbedBuilder({ color: 0x2B2D31 });
         this.embedReleases();
     }
 
-    initEmbedBuilder({ name: name, color: color }) {
+    initEmbedBuilder({ color: color }) {
         let avatar_url = "";
         if(this.data.length > 0) {
             avatar_url = this.data[0].author?.avatar_url;
         }
         this.embed = new EmbedBuilder()
             .setColor(color)
-            .setAuthor({ name: name, iconURL: avatar_url });
+            .setAuthor({ name: "Releases", iconURL: avatar_url });
     }
 
     embedReleases() {
