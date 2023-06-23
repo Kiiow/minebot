@@ -19,6 +19,10 @@ class GithhubHandler {
     async releases() {
         try {
             let data = await getReleasesFromOrganization(this.user, this.repository);
+            if(data?.message === "Not Found") {
+                this.interaction.reply(`No repository found \`${this.user}/${this.repository}\``);
+                return;
+            }
             const embedResponse = (new GithubReleasesToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [ embedResponse ] });
         } catch (err) {
@@ -29,9 +33,15 @@ class GithhubHandler {
 
     async repos() {
         try {
-            let embedResponse = undefined;
             let data = await getRepositories(this.user);
-            embedResponse = (new GithubReposToEmbed(data)).getEmbed();
+            if(data?.message === "Not Found") {
+                this.interaction.reply(`No user found with name \`${this.user}\``);
+                return;
+            }
+            if(data?.length == 0) {
+                this.interaction.reply(`No repository found for user \`${this.user}\``)
+            }
+            let embedResponse = (new GithubReposToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
             return;
         } catch (err) {
@@ -43,6 +53,10 @@ class GithhubHandler {
     async profile() {
         try {
             let data = await getProfile(this.user);
+            if(data?.message === "Not Found") {
+                this.interaction.reply(`No user found with name \`${this.user}\``);
+                return;
+            }
             let embedResponse = (new GithubProfileToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
         } catch (err) {
