@@ -10,7 +10,7 @@ const { CommandManager } = require("./src/Services/CommandManager");
 const client = new Client({ "intents" : [ GatewayIntentBits.Guilds ] });
 registerCommands(commands);
 
-client.on('ready', () => {
+client.on("ready", () => {
   console.log(`Client logged in as ${client.user?.tag}`);
 });
 

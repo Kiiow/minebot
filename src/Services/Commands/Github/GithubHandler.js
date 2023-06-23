@@ -23,7 +23,7 @@ class GithhubHandler {
             this.interaction.reply({ embeds: [ embedResponse ] });
         } catch (err) {
             console.log(err);
-            this.interaction.reply("Error while executing the github request");
+            this.interaction.reply("Error while executing the command");
         }
     }
 
@@ -36,7 +36,7 @@ class GithhubHandler {
             return;
         } catch (err) {
             console.log(err);
-            this.interaction.reply("Error while executing the github request");
+            this.interaction.reply("Error while executing the command");
         }
     }
 
@@ -47,7 +47,7 @@ class GithhubHandler {
             this.interaction.reply({ embeds: [embedResponse] });
         } catch (err) {
             console.log(err);
-            this.interaction.reply("Error while executing the github request");
+            this.interaction.reply("Error while executing the command");
         }
     }
 }

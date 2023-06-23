@@ -28,9 +28,9 @@ class GithubReposToEmbed {
     }
 
     embedRepos() {
-        this.data.forEach( (repo, index) => {
+        // TODO: add left and right button with pagination every 5 items
+        this.data.slice(0, 5).forEach( (repo, index) => {
             this.addRepoAsEmbed(repo, ++index);
-            // TODO: add left and right button with pagination every 5 items
         })
     }
 

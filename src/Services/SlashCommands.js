@@ -25,20 +25,22 @@ async function removeCommands() {
 }
 
 async function exit(client) {
-    await removeCommands();
+    if(process.env.ENVIRONMENT?.toUpperCase() === "PROD") {
+        await removeCommands();
+    }
     console.log(`${client.user?.tag} disconnecting...`);
     client.destroy();
-    process.exit();
+    process.exit(0);
 }
 
 function disconnectHandler(client) {
-    process.on('SIGINT', () => {
+    process.on('SIGINT', async () => {
         console.log(`Stopping bot manually (CTRL + C)`);
-        exit(client);
+        await exit(client);
     });
 
-    process.on('exit', () => {
-        exit(client);
+    process.on('exit', async () => {
+        await exit(client);
     })
 }
 

@@ -1,4 +1,7 @@
 const { EmbedBuilder } = require("@discordjs/builders");
+const R = require("ramda");
+const { formatDate } = require("../../../Date");
+const { endWithList, getKeyValues } = require("../../../RHelper");
 
 class GithubReleasesToEmbed {
 
@@ -22,22 +25,31 @@ class GithubReleasesToEmbed {
     }
 
     embedReleases() {
-        this.data.forEach( (release) => {
-            this.addReleaseAsEmbed(release);
-        })
-    }
+        // TODO: add navigation key to check every releases
+        let formattedRelease = R.map(this.getFormattedRelease, this.data).slice(0, 10);
 
-    addReleaseAsEmbed(release) {
-        let downloadCount = 0;
-        release.assets.forEach( (asset) => {
-            downloadCount += asset.download_count;
-        })
+        const getFormattedKey = (key) => getKeyValues(key, formattedRelease).join("\r\n");
 
         this.embed.addFields(
-            { name: "Name", value: `[${release.name}](${release.url})`, inline: true },
-            { name: "Release date", value: (new Date(release.published_0at)).toLocaleString(), inline: true },
-            { name: "Downloads", value: `${downloadCount}`, inline: true }
+            { name: "Name", value: getFormattedKey("release_name"), inline: true },
+            { name: "Release date", value: getFormattedKey("date"), inline: true },
+            { name: "Downloads", value: getFormattedKey("download_count"), inline: true }
         );
+    }
+
+    getFormattedRelease(release) {
+        let downloadCount = 0;
+        let extension = [".yml", ".blockmap"];
+        
+        (R.filter( item => !endWithList(item?.name, extension))(release.assets)).forEach( (item) => {
+            downloadCount += item.download_count;
+        });
+
+        return {
+            release_name: `[${release.tag_name}](${release.html_url})`,
+            date: formatDate(release.published_at, "dd/mm/yyyy h:i"),
+            download_count: downloadCount
+        }
     }
 
     getEmbed() { return this.embed; }
