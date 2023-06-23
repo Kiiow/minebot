@@ -1,6 +1,10 @@
+const dotenv = require("dotenv");
+
 function loadConfig() {
-    require("dotenv").config({ path: ".env.local" });
-    require("dotenv").config({ path: ".env" });
+    dotenv.config({ path: ".env.local" });
+    dotenv.config({ path: ".env" });
 }
 
-module.exports = loadConfig;
+module.exports = {
+    loadConfig
+}

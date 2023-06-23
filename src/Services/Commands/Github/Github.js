@@ -23,7 +23,7 @@ async function github(interaction) {
 module.exports = {
     "slashBuilder":
     new SlashCommandBuilder()
-        .setName("gh")
+        .setName("git")
         .setDescription("Interact with github repositories")
         .addSubcommand( sc =>
             sc
