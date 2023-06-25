@@ -23,6 +23,10 @@ class GithhubHandler {
                 this.interaction.reply(`No repository found \`${this.user}/${this.repository}\``);
                 return;
             }
+            if(data?.length == 0) {
+                this.interaction.reply(`No release found for the repository \`${this.user}/${this.repository}\``)
+                return;
+            }
             const embedResponse = (new GithubReleasesToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [ embedResponse ] });
         } catch (err) {
@@ -40,6 +44,7 @@ class GithhubHandler {
             }
             if(data?.length == 0) {
                 this.interaction.reply(`No repository found for user \`${this.user}\``)
+                return;
             }
             let embedResponse = (new GithubReposToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });

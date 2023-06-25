@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("@discordjs/builders");
-const { formatDate } = require("../../../Date.js");
+const { formatDate } = require("../../../Tools/Date.js");
 
 class GithubProfileToEmbed {
 

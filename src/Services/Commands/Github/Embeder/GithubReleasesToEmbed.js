@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("@discordjs/builders");
 const R = require("ramda");
-const { formatDate } = require("../../../Date");
-const { endWithList, getKeyValues } = require("../../../RHelper");
+const { formatDate } = require("../../../Tools/Date.js");
+const { endWithList, getKeyValues } = require("../../../Tools/RHelper.js");
 
 class GithubReleasesToEmbed {
 
