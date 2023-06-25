@@ -17,7 +17,6 @@ class DiscordEmbed {
     constructor(data) {
         this.data = data;
         this.embed = new EmbedBuilder();
-        this.embed.setAuthor({ name: "Hello" }).setDescription("Ayoh");
     }
 
     setTitle(title) {
