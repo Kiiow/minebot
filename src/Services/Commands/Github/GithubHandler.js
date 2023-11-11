@@ -22,14 +22,9 @@ class GithhubHandler {
     async releases() {
         try {
             let data = await getReleasesFromOrganization(this.user, this.repository);
-            if(data?.message === NO_DATA) {
-                this.interaction.reply({ embeds: [ embedError(`No repository found \`${this.user}/${this.repository}\``) ] });
-                return;
-            }
-            if(data?.length == 0) {
-                this.interaction.reply({ embeds: [ embedError(`No release found for the repository \`${this.user}/${this.repository}\``) ] });
-                return;
-            }
+            if(handleError(data?.message === NO_DATA, `No repository found \`${this.user}/${this.repository}\``)) return;
+            if(handleError(data?.length == 0, `No release found for the repository \`${this.user}/${this.repository}\``)) return;
+
             const embedResponse = (new GithubReleasesToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [ embedResponse ] });
         } catch (err) {
@@ -41,14 +36,10 @@ class GithhubHandler {
     async repos() {
         try {
             let data = await getRepositories(this.user);
-            if(data?.message === NO_DATA) {
-                this.interaction.reply({ embeds: [ embedError(`No user found with name \`${this.user}\``) ] });
-                return;
-            }
-            if(data?.length == 0) {
-                this.interaction.reply({ embeds: [ embedError(`No repository found for user \`${this.user}\``) ] });
-                return;
-            }
+
+            if(handleError(data?.message === NO_DATA, `No user found with name \`${this.user}\``)) return;
+            if(handleError(data?.length == 0, `No repository found for user \`${this.user}\``)) return;
+
             let embedResponse = (new GithubReposToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
             return;
@@ -61,17 +52,20 @@ class GithhubHandler {
     async profile() {
         try {
             let data = await getProfile(this.user);
-            if(data?.message === NO_DATA) {
-                this.interaction.reply({ embeds: [ embedError(`No user found with name \`${this.user}\``) ] });
-                this.interaction.reply(`No user found with name \`${this.user}\``);
-                return;
-            }
+            if(handleError(data?.message === NO_DATA, `No user found with name \`${this.user}\``)) return;
+
             let embedResponse = (new GithubProfileToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
         } catch (err) {
             console.log(err);
             this.interaction.reply({ embeds: [ embedError("Error while executing the command") ] });
         }
+    }
+
+    handleError(condition, errorMessage) {
+        if(condition) return false;
+        this.interaction.reply({ embeds: [ embedError(errorMessage) ] });
+        return true;
     }
 }
 
