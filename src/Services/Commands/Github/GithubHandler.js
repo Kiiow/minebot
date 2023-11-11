@@ -22,13 +22,14 @@ class GithhubHandler {
     async releases() {
         try {
             let data = await getReleasesFromOrganization(this.user, this.repository);
-            if(handleError(data?.message === NO_DATA, `No repository found \`${this.user}/${this.repository}\``)) return;
-            if(handleError(data?.length == 0, `No release found for the repository \`${this.user}/${this.repository}\``)) return;
+            if(this.handleError(data?.message === NO_DATA, `No repository found \`${this.user}/${this.repository}\``)) return;
+            if(this.handleError(data?.length == 0, `No release found for the repository \`${this.user}/${this.repository}\``)) return;
 
             const embedResponse = (new GithubReleasesToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [ embedResponse ] });
         } catch (err) {
             console.log(err);
+            // if(this.interaction.)
             this.interaction.reply("Error while executing the command");
         }
     }
@@ -37,8 +38,8 @@ class GithhubHandler {
         try {
             let data = await getRepositories(this.user);
 
-            if(handleError(data?.message === NO_DATA, `No user found with name \`${this.user}\``)) return;
-            if(handleError(data?.length == 0, `No repository found for user \`${this.user}\``)) return;
+            if(this.handleError(data?.message === NO_DATA, `No user found with name \`${this.user}\``)) return;
+            if(this.handleError(data?.length == 0, `No repository found for user \`${this.user}\``)) return;
 
             let embedResponse = (new GithubReposToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
@@ -52,7 +53,7 @@ class GithhubHandler {
     async profile() {
         try {
             let data = await getProfile(this.user);
-            if(handleError(data?.message === NO_DATA, `No user found with name \`${this.user}\``)) return;
+            if(this.handleError(data?.message === NO_DATA, `No user found with name \`${this.user}\``)) return;
 
             let embedResponse = (new GithubProfileToEmbed(data)).getEmbed();
             this.interaction.reply({ embeds: [embedResponse] });
@@ -63,7 +64,9 @@ class GithhubHandler {
     }
 
     handleError(condition, errorMessage) {
-        if(condition) return false;
+        if(!condition) {
+            return false;
+        }
         this.interaction.reply({ embeds: [ embedError(errorMessage) ] });
         return true;
     }

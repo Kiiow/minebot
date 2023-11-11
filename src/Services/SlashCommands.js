@@ -24,23 +24,23 @@ async function removeCommands() {
         });
 }
 
-async function exit(client) {
+async function cleanExitDiscord(client) {
     if(process.env.ENVIRONMENT?.toUpperCase() === "PROD") {
         await removeCommands();
     }
     console.log(`${client.user?.tag} disconnecting...`);
     client.destroy();
-    process.exit(0);
 }
 
 function disconnectHandler(client) {
     process.on('SIGINT', async () => {
         console.log(`Stopping bot manually (CTRL + C)`);
-        await exit(client);
+        await cleanExitDiscord(client);
     });
 
-    process.on('exit', async () => {
-        await exit(client);
+    process.on('exit', async (code) => {
+        console.log(`Process Stoping with ${code}`);
+        await cleanExitDiscord(client);
     })
 }
 
