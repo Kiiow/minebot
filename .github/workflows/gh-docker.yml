@@ -1,7 +1,7 @@
 # Publish a Docker image on the project on the release of a new version
 name: Publish Docker
 
-on: [ workflow_dispatch, workflow_call ]
+on: [ "push" ]
 
 env:
   REGISTRY: ghcr.io
