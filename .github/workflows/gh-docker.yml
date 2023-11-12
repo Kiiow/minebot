@@ -1,7 +1,9 @@
 # Publish a Docker image on the project on the release of a new version
 name: Publish Docker
 
-on: [ "push" ]
+on:
+  release:
+    types: [ "published" ]
 
 env:
   REGISTRY: ghcr.io
