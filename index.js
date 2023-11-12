@@ -1,15 +1,16 @@
-require("./src/Config.js")();
+const { loadConfig } = require("./src/Config.js");
+loadConfig();
 
 const { Client, GatewayIntentBits } = require("discord.js");
 
-const { commands } = require("./src/Services/Commands");
-const { refreshSlashCommands } = require("./src/Services/SlashCommands");
+const { commands } = require("./src/Services/Commands.js");
+const { registerCommands, disconnectHandler } = require("./src/Services/SlashCommands.js");
 const { CommandManager } = require("./src/Services/CommandManager");
 
 const client = new Client({ "intents" : [ GatewayIntentBits.Guilds ] });
-refreshSlashCommands(commands);
+registerCommands(commands);
 
-client.on('ready', () => {
+client.on("ready", () => {
   console.log(`Client logged in as ${client.user?.tag}`);
 });
 
@@ -21,4 +22,4 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.login(process.env.DISCORDBOT_TOKEN);
-require("./src/Services/ExitRegister")(client);
+disconnectHandler(client);

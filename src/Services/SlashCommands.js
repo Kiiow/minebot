@@ -1,6 +1,6 @@
 const { REST, Routes } = require("discord.js");
 
-async function refreshSlashCommands(commands) {
+async function registerCommands(commands) {
     const rest = new REST({ version : '10' }).setToken(process.env.DISCORDBOT_TOKEN);
     console.log(`Start refreshing application (/) commands.`);
     await rest.put(Routes.applicationCommands(process.env.DISCORDBOT_CLIENT_ID), { "body": commands })
@@ -12,7 +12,7 @@ async function refreshSlashCommands(commands) {
         });
 }
 
-async function removeAllSlashCommands() {
+async function removeCommands() {
     const rest = new REST({ version : '10' }).setToken(process.env.DISCORDBOT_TOKEN);
     console.log(`Removing every (/) commands`);
     await rest.put(Routes.applicationCommands(process.env.DISCORDBOT_CLIENT_ID), { "body": [] })
@@ -24,7 +24,28 @@ async function removeAllSlashCommands() {
         });
 }
 
+async function cleanExitDiscord(client) {
+    if(process.env.ENVIRONMENT?.toUpperCase() === "PROD") {
+        await removeCommands();
+    }
+    console.log(`${client.user?.tag} disconnecting...`);
+    client.destroy();
+}
+
+function disconnectHandler(client) {
+    process.on('SIGINT', async () => {
+        console.log(`Stopping bot manually (CTRL + C)`);
+        await cleanExitDiscord(client);
+    });
+
+    process.on('exit', async (code) => {
+        console.log(`Process Stoping with ${code}`);
+        await cleanExitDiscord(client);
+    })
+}
+
 module.exports = {
-    refreshSlashCommands,
-    removeAllSlashCommands
+    registerCommands,
+    removeCommands,
+    disconnectHandler
 };

@@ -10,12 +10,12 @@ class UrlBuilder {
     }
 
     setPath(path) {
-        this.path = path;
+        this.path = encodeURI(path);
         return this;
     }
 
     addParams(key, value) {
-        this.params.set(key, value);
+        this.params.set(encodeURI(key), encodeURI(value));
         return this;
     }
 
