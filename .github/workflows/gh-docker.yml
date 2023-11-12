@@ -2,6 +2,12 @@
 name: Publish Docker
 
 on:
+  workflow_call:
+    inputs:
+      tag_name:
+        description: "Name of the docker build"
+        required: false
+        type: string
   release:
     types: [ "published" ]
 
@@ -40,5 +46,5 @@ jobs:
           file: ./Dockerfile
           context: .
           push: true
-          tags: latest
+          tags: ${{ input.tag_name != "" && input.tag_name || "latest" }}
           labels: ${{ steps.meta.outputs.labels }}
