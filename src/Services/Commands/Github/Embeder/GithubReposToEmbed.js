@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("@discordjs/builders");
+const { ghfork, ghstar, ghissue, gheye } = require("../../../Tools/Emote.js");
 const EMPTY_LINE = "** **";
 
 class GithubReposToEmbed {
@@ -36,16 +37,19 @@ class GithubReposToEmbed {
 
     addRepoAsEmbed(repo, index) {
         let lines = [];
+        const MAX_TOPICS = 5;
+
         if (Array.isArray(repo.topics)) {
-            lines.push(`\n${repo.topics.map(item => `\`${item}\``).join(" ") }`);
+            let topics = repo.topics.slice(0, MAX_TOPICS);
+            lines.push(`\n${topics.map(item => `\`${item}\``).join(" ") }${repo.topics.length > MAX_TOPICS ? " ..." : ""}`);
         }
-        lines.push(repo.description);
-        lines.push(EMPTY_LINE);
-        lines.push(`Ssh: \`${repo.ssh_url}\``);
+        lines.push(repo.description ?? "No description")
+        lines.push(EMPTY_LINE)
+        // lines.push(`Ssh: \`${repo.ssh_url}\``)
         lines.push(`Link: ${repo.html_url}`)
         this.embed.addFields(
             {
-                name: `\`${index}\`. ${repo.name} (${repo.stargazers_count} :star:)`,
+                name: `${index}) ${repo.name} (*${repo.forks}* ${ghfork} | *${repo.stargazers_count}* ${ghstar} | *${repo.open_issues}* ${ghissue} | *${repo.watchers}* ${gheye} )`,
                 value: lines.join("\n"),
                 inline: false
             },
