@@ -2,8 +2,9 @@
 name: Publish Docker
 
 on:
-  release:
-    types: [ "published" ]
+  push
+  # release:
+  #   types: [ "published" ]
 
 env:
   REGISTRY: ghcr.io
@@ -40,5 +41,5 @@ jobs:
           file: ./Dockerfile
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ github.ref_name }}
           labels: ${{ steps.meta.outputs.labels }}
