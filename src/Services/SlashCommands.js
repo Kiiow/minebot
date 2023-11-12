@@ -33,15 +33,14 @@ async function cleanExitDiscord(client) {
 }
 
 function disconnectHandler(client) {
-    process.on('SIGINT', async () => {
+    process.on("SIGTERM", async () => {
+        console.log(`Stopping process`);
+        await cleanExitDiscord(client);
+    });
+    process.on("SIGINT", async () => {
         console.log(`Stopping bot manually (CTRL + C)`);
         await cleanExitDiscord(client);
     });
-
-    process.on('exit', async (code) => {
-        console.log(`Process Stoping with ${code}`);
-        await cleanExitDiscord(client);
-    })
 }
 
 module.exports = {
