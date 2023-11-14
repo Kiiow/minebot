@@ -1,5 +1,7 @@
 FROM node:16.20.2-alpine3.18
 
+LABEL maintainer=https://github.com/Kiiow
+
 ENV ENVIRONMENT=
 ENV DISCORDBOT_TOKEN=
 ENV DISCORDBOT_CLIENT_ID=
