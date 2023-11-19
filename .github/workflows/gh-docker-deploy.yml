@@ -27,12 +27,12 @@ jobs:
         shell: bash
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.CD_SSH_PRIVATE_KEY }}"
+          echo "${{ secrets.CD_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.CD_SERVER_HOST }} > ~/.ssh/known_hosts
         
       - name: Deploy docker-compose.yml and restart image
         shell: bash
         run: |
-          ssh ${{ secrets.CD_SSH_USERNAME }}@${{ secrets.CD_SERVER_HOST }}
+          ssh -p ${{ secrets.CD_SSH_SERVER_PORT }} ${{ secrets.CD_SSH_USERNAME }}@${{ secrets.CD_SERVER_HOST }}
           # docker compose up --env-file ./config/.env -d
 
