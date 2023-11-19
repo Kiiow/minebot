@@ -2,9 +2,7 @@
 name: Deploy Minebot
 
 on:
-  push:
-    branches:
-      - "branches/deploy_docker_build"
+  workflow_dispatch
 
 jobs:
   deploy-image:
