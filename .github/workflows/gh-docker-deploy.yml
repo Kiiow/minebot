@@ -28,7 +28,8 @@ jobs:
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.CD_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.CD_SERVER_HOST }} > ~/.ssh/known_hosts
+          echo "${{ secrets.CD_SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          ll ~/.ssh/
         
       - name: Deploy docker-compose.yml and restart image
         shell: bash
