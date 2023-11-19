@@ -15,6 +15,9 @@ jobs:
       packages: read
     
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
       - name: Create .env file
         shell: bash
         run: |
