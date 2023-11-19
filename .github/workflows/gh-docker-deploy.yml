@@ -38,7 +38,6 @@ jobs:
           port: 5634
           username: ${{ secrets.CD_SSH_USERNAME }}
           key: ${{ secrets.CD_SSH_PRIVATE_KEY }}
-          fingerprint: ${{ secrets.CD_SSH_KNOWN_HOSTS }}
           source: "config,docker/docker-compose.yml"
           target: ${{ secrets.CD_SSH_WORK_DIR }}
       
