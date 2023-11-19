@@ -1,0 +1,38 @@
+# Deploy the Docker image on a defined server
+name: Deploy Minebot
+
+on:
+  push:
+    branches:
+      - "branches/deploy_docker_build"
+
+jobs:
+  deploy-image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+    
+    steps:
+      - name: Create .env file
+        shell: bash
+        run: |
+          echo "ENVIRONMENT=PROD" >> .env
+          echo "DISCORDBOT_TOKEN=${{ secrets.CD_DISCORD_BOT_PROD_TOKEN }}" >> .env
+          echo "DISCORDBOT_CLIENT_ID=${{ secrets.CD_DISCORD_BOT_PROD_CLIENT_ID }}" >> .env
+          echo "SCA_API_TOKEN=${{ secrets.CD_SCA_API_PROD_TOKEN }}" >> .env
+      
+      - name: Setup ssh
+        shell: bash
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.CD_SSH_PRIVATE_KEY }}"
+          ssh-keyscan -H ${{ secrets.CD_SERVER_HOST }} > ~/.ssh/known_hosts
+        
+      - name: Deploy docker-compose.yml and restart image
+        shell: bash
+        run: |
+          ssh ${{ secrets.CD_SSH_USERNAME }}@${{ secrets.CD_SERVER_HOST }}
+          # docker compose up --env-file ./config/.env -d
+
