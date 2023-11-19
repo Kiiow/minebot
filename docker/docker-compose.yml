@@ -1,0 +1,3 @@
+services:
+  minebot:
+    image: "ghcr.io/kiiow/minebot:latest"

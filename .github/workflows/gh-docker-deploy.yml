@@ -29,11 +29,17 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.CD_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.CD_SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-          ls -lfa ~/.ssh/
         
       - name: Deploy docker-compose.yml and restart image
         shell: bash
         run: |
-          ssh -p ${{ secrets.CD_SSH_SERVER_PORT }} ${{ secrets.CD_SSH_USERNAME }}@${{ secrets.CD_SERVER_HOST }}
-          # docker compose up --env-file ./config/.env -d
-
+          scp -P 5634 ./.env {{ secrets.CD_SSH_USERNAME }}@{{ secrets.CD_SSH_SERVER_HOST }}:{{ secrets.CD_SSH_WORK_DIR }}/config
+          scp -P 5634 ./docker/docker-compose.yml {{ secrets.CD_SSH_USERNAME }}@{{ secrets.CD_SSH_SERVER_HOST }}:{{ secrets.CD_SSH_WORK_DIR }}
+      
+      - name: Restart Docker image
+        shell: bash
+        run: |
+          ssh -p ${{ secrets.CD_SSH_SERVER_PORT }} ${{ secrets.CD_SSH_USERNAME }}@${{ secrets.CD_SERVER_HOST }} '''
+            cd {{ secrets.CD_SSH_WORK_DIR }}
+            docker compose up --env-file ./config/.env -d
+          '''
