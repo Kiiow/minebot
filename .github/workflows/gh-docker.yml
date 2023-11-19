@@ -1,5 +1,5 @@
 # Publish a Docker image of the project on the release of a new version
-name: Publish Docker
+name: Build & Publish Docker
 
 on:
   release:
