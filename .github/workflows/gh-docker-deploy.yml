@@ -31,16 +31,14 @@ jobs:
           echo "${{ secrets.CD_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.CD_SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Deploy docker-compose.yml and restart image
+      - name: Deploy docker-compose.yml and config
         uses: appleboy/scp-action@v0.1.4
         with:
-          # Authentication
           host: ${{ secrets.CD_SSH_SERVER_HOST }}
           port: 5634
           username: ${{ secrets.CD_SSH_USERNAME }}
           key: ${{ secrets.CD_SSH_PRIVATE_KEY }}
           fingerprint: ${{ secrets.CD_SSH_KNOWN_HOSTS }}
-          # Stuff to copy
           source: "config,docker/docker-compose.yml"
           target: ${{ secrets.CD_SSH_WORK_DIR }}
       
