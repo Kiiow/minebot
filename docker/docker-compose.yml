@@ -1,3 +1,9 @@
 services:
   minebot:
     image: "ghcr.io/kiiow/minebot:latest"
+    container_name: minebot
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT}
+      - DISCORDBOT_TOKEN=${DISCORDBOT_TOKEN}
+      - DISCORDBOT_CLIENT_ID=${DISCORDBOT_CLIENT_ID}
+      - SCA_API_TOKEN=${SCA_API_TOKEN}
