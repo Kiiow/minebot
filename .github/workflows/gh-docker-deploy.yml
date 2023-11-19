@@ -18,10 +18,11 @@ jobs:
       - name: Create .env file
         shell: bash
         run: |
-          echo "ENVIRONMENT=PROD" >> .env
-          echo "DISCORDBOT_TOKEN=${{ secrets.CD_DISCORD_BOT_PROD_TOKEN }}" >> .env
-          echo "DISCORDBOT_CLIENT_ID=${{ secrets.CD_DISCORD_BOT_PROD_CLIENT_ID }}" >> .env
-          echo "SCA_API_TOKEN=${{ secrets.CD_SCA_API_PROD_TOKEN }}" >> .env
+          mkdir config
+          echo "ENVIRONMENT=PROD" >> ./config/.env
+          echo "DISCORDBOT_TOKEN=${{ secrets.CD_DISCORD_BOT_PROD_TOKEN }}" >> ./config/.env
+          echo "DISCORDBOT_CLIENT_ID=${{ secrets.CD_DISCORD_BOT_PROD_CLIENT_ID }}" >> ./config/.env
+          echo "SCA_API_TOKEN=${{ secrets.CD_SCA_API_PROD_TOKEN }}" >> ./config/.env
       
       - name: Setup ssh
         shell: bash
@@ -29,12 +30,19 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.CD_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.CD_SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-        
+
       - name: Deploy docker-compose.yml and restart image
-        shell: bash
-        run: |
-          scp -P 5634 ./.env ${{ secrets.CD_SSH_USERNAME }}\@${{ secrets.CD_SSH_SERVER_HOST }}:${{ secrets.CD_SSH_WORK_DIR }}/config
-          scp -P 5634 ./docker/docker-compose.yml ${{ secrets.CD_SSH_USERNAME }}\@${{ secrets.CD_SSH_SERVER_HOST }}:${{ secrets.CD_SSH_WORK_DIR }}
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          # Authentication
+          host: ${{ secrets.CD_SSH_SERVER_HOST }}
+          port: 5634
+          username: ${{ secrets.CD_SSH_USERNAME }}
+          key: ${{ secrets.CD_SSH_PRIVATE_KEY }}
+          fingerprint: ${{ secrets.CD_SSH_KNOWN_HOSTS }}
+          # Stuff to copy
+          source: "config,docker/docker-compose.yml"
+          target: ${{ secrets.CD_SSH_WORK_DIR }}
       
       - name: Restart Docker image
         shell: bash
