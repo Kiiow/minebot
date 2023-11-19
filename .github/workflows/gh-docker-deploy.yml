@@ -55,4 +55,4 @@ jobs:
           key: ${{ secrets.CD_SSH_PRIVATE_KEY }}
           script: |
               cd ${{ secrets.CD_SSH_WORK_DIR }}
-              docker compose -f ./docker/docker-compose.yml --env-file ./config/.env up -d
+              docker compose -f ./docker/docker-compose.yml --env-file ./config/.env up -d --force-recreate
